@@ -1,4 +1,4 @@
-# SAP OrderFulfillment System (Extended)
+# SAP OrderFulfillment System
 
 An SAP CAP (Cloud Application Programming Model) project demonstrating a
 production-shaped order fulfillment service: role-based auth, an order state
