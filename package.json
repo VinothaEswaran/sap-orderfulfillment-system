@@ -1,0 +1,77 @@
+{
+  "name": "sap-orderfulfillment-system",
+  "version": "1.0.0",
+  "description": "Extended SAP CAP Order Fulfillment System with XSUAA auth, role-based state machine, tenant isolation, draft entities, custom actions and external mock integrations",
+  "engines": {
+    "node": "^18 || ^20"
+  },
+  "dependencies": {
+    "@sap/cds": "^8",
+    "@sap/xssec": "^4",
+    "express": "^4",
+    "axios": "^1"
+  },
+  "devDependencies": {
+    "@cap-js/sqlite": "^1",
+    "@sap/cds-dk": "^8",
+    "jest": "^29",
+    "axios-mock-adapter": "^2",
+    "cross-env": "^7",
+    "concurrently": "^8"
+  },
+  "scripts": {
+    "start": "cds-serve",
+    "watch": "cds watch",
+    "db:deploy": "cds deploy --to sqlite:db/orderfulfillment.db",
+    "mock:external": "node mock-server/server.js",
+    "dev": "concurrently -k \"npm:mock:external\" \"npm:watch\"",
+    "test": "cross-env NODE_ENV=test jest --runInBand",
+    "test:unit": "cross-env NODE_ENV=test jest test/unit --runInBand",
+    "test:integration": "cross-env NODE_ENV=test jest test/integration --runInBand"
+  },
+  "cds": {
+    "requires": {
+      "db": {
+        "kind": "sqlite",
+        "credentials": { "url": "db/orderfulfillment.db" },
+        "[test]": {
+          "credentials": { "url": ":memory:" }
+        }
+      },
+      "auth": {
+        "[production]": {
+          "kind": "xsuaa"
+        },
+        "kind": "mocked",
+        "users": {
+          "alice": {
+            "password": "pass",
+            "roles": ["Customer"],
+            "attr": { "tenant": "t1" }
+          },
+          "bob": {
+            "password": "pass",
+            "roles": ["SalesRep"],
+            "attr": { "tenant": "t1" }
+          },
+          "carol": {
+            "password": "pass",
+            "roles": ["Warehouse"],
+            "attr": { "tenant": "t1" }
+          },
+          "dave": {
+            "password": "pass",
+            "roles": ["Admin"],
+            "attr": { "tenant": "t1" }
+          },
+          "erin": {
+            "password": "pass",
+            "roles": ["Customer"],
+            "attr": { "tenant": "t2" }
+          }
+        }
+      },
+      "multitenancy": false
+    }
+  }
+}

@@ -1,0 +1,24 @@
+{
+  "xsappname": "sap-orderfulfillment-system",
+  "tenant-mode": "shared",
+  "description": "Security descriptor for SAP Order Fulfillment System",
+  "scopes": [
+    { "name": "$XSAPPNAME.Customer", "description": "Customer - places and views own orders" },
+    { "name": "$XSAPPNAME.SalesRep", "description": "Sales Rep - confirms orders, reassigns warehouse" },
+    { "name": "$XSAPPNAME.Warehouse", "description": "Warehouse - packs and ships orders" },
+    { "name": "$XSAPPNAME.Admin", "description": "Admin - full access, any transition" }
+  ],
+  "attributes": [
+    {
+      "name": "tenant",
+      "description": "Tenant identifier for SaaS-style data isolation",
+      "valueType": "string"
+    }
+  ],
+  "role-templates": [
+    { "name": "Customer", "description": "Customer role", "scope-references": ["$XSAPPNAME.Customer"] },
+    { "name": "SalesRep", "description": "Sales Rep role", "scope-references": ["$XSAPPNAME.SalesRep"] },
+    { "name": "Warehouse", "description": "Warehouse role", "scope-references": ["$XSAPPNAME.Warehouse"] },
+    { "name": "Admin", "description": "Admin role", "scope-references": ["$XSAPPNAME.Admin"] }
+  ]
+}
